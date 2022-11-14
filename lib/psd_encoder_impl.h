@@ -22,6 +22,7 @@
 #define INCLUDED_NRSC5_PSD_ENCODER_IMPL_H
 
 #include <nrsc5/psd_encoder.h>
+#include <gnuradio/thread/thread.h>
 
 namespace gr {
   namespace nrsc5 {
@@ -70,9 +71,10 @@ namespace gr {
       int seq_num;
       std::string packet;
       int packet_off;
-      void send_message(long, std::string)
+      void send_message(long, std::string);
       void parse(pmt::pmt_t pdu);
       void title_in(pmt::pmt_t msg);
+      void artist_in(pmt::pmt_t msg);
 
       std::string encode_psd_packet(int dtpf, int port, int seq);
       std::string encode_id3();
@@ -81,7 +83,7 @@ namespace gr {
       int compute_fcs(std::string& packet);
 
      public:
-      psd_encoder_impl(const int prog_num, std::string& title, std::string& artist);
+      psd_encoder_impl(const int prog_num, std::string title, std::string artist);
       ~psd_encoder_impl();
 
       // Where all the action really happens

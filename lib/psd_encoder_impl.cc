@@ -24,22 +24,19 @@
 
 #include <gnuradio/io_signature.h>
 #include "psd_encoder_impl.h"
+#include <boost/spirit/include/qi.hpp>
+#include <math.h>
+#include <ctype.h>
+#include <time.h>
+#include <cstdio>
 
 namespace gr {
   namespace nrsc5 {
 
-    psd_encoder::sptr
-    psd_encoder::make(const int prog_num, const std::string& title, const std::string& artist)
-    {
-      return gnuradio::get_initial_sptr
-        (new psd_encoder_impl(prog_num, title, artist));
-    }
-
-
     /*
      * The private constructor
      */
-    psd_encoder_impl::psd_encoder_impl(const int prog_num, const std::string& title, const std::string& artist)
+    psd_encoder_impl::psd_encoder_impl(const int prog_num, std::string title, std::string artist)
       : gr::sync_block("psd_encoder",
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(unsigned char)))
@@ -49,6 +46,9 @@ namespace gr {
       message_port_register_in(pmt::mp("title in"));
 	    set_msg_handler(pmt::mp("title in"), std::bind(&encoder_impl::title_in, this, std::placeholders::_1));
 
+      message_port_register_in(pmt::mp("artist in"));
+	    set_msg_handler(pmt::mp("artist in"), std::bind(&encoder_impl::artist_in, this, std::placeholders::_1));
+
       set_title(std::string(title));
       set_artist(std::string(artist));
       // this->title = title;
@@ -57,6 +57,14 @@ namespace gr {
       packet_off = 0;
 
     }
+
+    psd_encoder::sptr
+    psd_encoder::make(const int prog_num, std::string title, std::string artist)
+    {
+      return gnuradio::get_initial_sptr
+        (new psd_encoder_impl(prog_num, title, artist));
+    }
+
 
     void psd_encoder_impl::title_in(pmt::pmt_t msg) {
       if(!pmt::is_pair(msg)) {
@@ -87,7 +95,7 @@ namespace gr {
       double d1;
 
       // radio text
-      } else if(phrase_parse(in.begin(), in.end(),
+      if(phrase_parse(in.begin(), in.end(),
           "title" >> lexeme[+(char_ - '\n')] >> -lit("\n"),
           space, s1)) {
         cout << "title: " << s1 << endl;
@@ -129,7 +137,7 @@ namespace gr {
       double d1;
 
       // radio text
-      } else if(phrase_parse(in.begin(), in.end(),
+      if(phrase_parse(in.begin(), in.end(),
           "artist" >> lexeme[+(char_ - '\n')] >> -lit("\n"),
           space, s1)) {
         cout << "artist: " << s1 << endl;
@@ -149,17 +157,17 @@ namespace gr {
     {
     }
 
-    void encoder_impl::set_title(std::string text) {
+    void psd_encoder_impl::set_title(std::string text) {
         size_t len = std::min(sizeof(title)), text.length());
 
-        std::memset(title, ' ', sizeof(title));
+        std::memset(title, ' ');
         std::memcpy(title, text.c_str());
     }
 
-    void encoder_impl::set_artist(std::string text) {
+    void psd_encoder_impl::set_artist(std::string text) {
         size_t len = std::min(sizeof(artist)), text.length());
 
-        std::memset(artist, ' ', sizeof(artist));
+        std::memset(artist, ' ');
         std::memcpy(artist, text.c_str());
     }
 
@@ -184,7 +192,7 @@ namespace gr {
     }
 
     std::string
-    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq, std::string& title, std::string& artist)
+    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq, std::string title, std::string artist)
     {
       std::string out;
 

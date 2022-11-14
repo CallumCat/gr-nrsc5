@@ -47,7 +47,7 @@ namespace gr {
        * class. nrsc5::psd_encoder::make is the public interface for
        * creating new instances.
        */
-      static sptr make(const int prog_num, const std::string& title, const std::string& artist);
+      static sptr make(const int prog_num, std::string& title, std::string& artist);
     };
 
   } // namespace nrsc5
