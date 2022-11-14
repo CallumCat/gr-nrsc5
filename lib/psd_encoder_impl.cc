@@ -45,10 +45,101 @@ namespace gr {
               gr::io_signature::make(1, 1, sizeof(unsigned char)))
     {
       this->prog_num = prog_num;
-      this->title = title;
-      this->artist = artist;
+
+      message_port_register_in(pmt::mp("title in"));
+	    set_msg_handler(pmt::mp("title in"), std::bind(&encoder_impl::title_in, this, std::placeholders::_1));
+
+      set_title(std::string(title));
+      set_artist(std::string(artist));
+      // this->title = title;
+      // this->artist = artist;
       seq_num = 0;
       packet_off = 0;
+
+    }
+
+    void psd_encoder_impl::title_in(pmt::pmt_t msg) {
+      if(!pmt::is_pair(msg)) {
+        return;
+      }
+
+      using std::cout;
+      using std::endl;
+      using boost::spirit::qi::phrase_parse;
+      using boost::spirit::qi::lexeme;
+      using boost::spirit::qi::char_;
+      using boost::spirit::qi::hex;
+      using boost::spirit::qi::int_;
+      using boost::spirit::qi::uint_;
+      using boost::spirit::qi::bool_;
+      using boost::spirit::qi::double_;
+      using boost::spirit::qi::space;
+      using boost::spirit::qi::blank;
+      using boost::spirit::qi::lit;
+
+      int msg_len = pmt::blob_length(pmt::cdr(msg));
+      std::string in = std::string((char*)pmt::blob_data(pmt::cdr(msg)), msg_len);
+      cout << "input string: " << in << "   length: " << in.size() << endl;
+
+      unsigned int ui1;
+      std::string s1;
+      bool b1;
+      double d1;
+
+      // radio text
+      } else if(phrase_parse(in.begin(), in.end(),
+          "title" >> lexeme[+(char_ - '\n')] >> -lit("\n"),
+          space, s1)) {
+        cout << "title: " << s1 << endl;
+        set_title(s1);
+
+
+      // no match / unkonwn command
+      } else {
+        cout << "not understood" << endl;
+      }
+    }
+
+    void psd_encoder_impl::artist_in(pmt::pmt_t msg) {
+      if(!pmt::is_pair(msg)) {
+        return;
+      }
+
+      using std::cout;
+      using std::endl;
+      using boost::spirit::qi::phrase_parse;
+      using boost::spirit::qi::lexeme;
+      using boost::spirit::qi::char_;
+      using boost::spirit::qi::hex;
+      using boost::spirit::qi::int_;
+      using boost::spirit::qi::uint_;
+      using boost::spirit::qi::bool_;
+      using boost::spirit::qi::double_;
+      using boost::spirit::qi::space;
+      using boost::spirit::qi::blank;
+      using boost::spirit::qi::lit;
+
+      int msg_len = pmt::blob_length(pmt::cdr(msg));
+      std::string in = std::string((char*)pmt::blob_data(pmt::cdr(msg)), msg_len);
+      cout << "input string: " << in << "   length: " << in.size() << endl;
+
+      unsigned int ui1;
+      std::string s1;
+      bool b1;
+      double d1;
+
+      // radio text
+      } else if(phrase_parse(in.begin(), in.end(),
+          "artist" >> lexeme[+(char_ - '\n')] >> -lit("\n"),
+          space, s1)) {
+        cout << "artist: " << s1 << endl;
+        set_artist(s1);
+
+
+      // no match / unkonwn command
+      } else {
+        cout << "not understood" << endl;
+      }
     }
 
     /*
@@ -57,6 +148,22 @@ namespace gr {
     psd_encoder_impl::~psd_encoder_impl()
     {
     }
+
+    void encoder_impl::set_title(std::string text) {
+        size_t len = std::min(sizeof(title)), text.length());
+
+        std::memset(title, ' ', sizeof(title));
+        std::memcpy(title, text.c_str());
+    }
+
+    void encoder_impl::set_artist(std::string text) {
+        size_t len = std::min(sizeof(artist)), text.length());
+
+        std::memset(artist, ' ', sizeof(artist));
+        std::memcpy(artist, text.c_str());
+    }
+
+    
 
     int
     psd_encoder_impl::work(int noutput_items,
@@ -77,7 +184,7 @@ namespace gr {
     }
 
     std::string
-    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq)
+    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq, std::string& title, std::string& artist)
     {
       std::string out;
 

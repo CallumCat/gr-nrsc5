@@ -65,11 +65,14 @@ namespace gr {
     {
      private:
       int prog_num;
-      std::string title;
-      std::string artist;
+      void set_artist(std::string text);
+      void set_title(std::string text);
       int seq_num;
       std::string packet;
       int packet_off;
+      void send_message(long, std::string)
+      void parse(pmt::pmt_t pdu);
+      void title_in(pmt::pmt_t msg);
 
       std::string encode_psd_packet(int dtpf, int port, int seq);
       std::string encode_id3();
@@ -78,7 +81,7 @@ namespace gr {
       int compute_fcs(std::string& packet);
 
      public:
-      psd_encoder_impl(const int prog_num, const std::string& title, const std::string& artist);
+      psd_encoder_impl(const int prog_num, std::string& title, std::string& artist);
       ~psd_encoder_impl();
 
       // Where all the action really happens

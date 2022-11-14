@@ -9,14 +9,23 @@ parameters:
     label: Program number
     dtype: int
     default: 0
--   id: title
-    label: Title
-    dtype: string
-    default: Title
--   id: artist
-    label: Artist
-    dtype: string
-    default: Artist
+# -   id: title
+#     label: Title
+#     dtype: string
+#     default: Title
+# -   id: artist
+#     label: Artist
+#     dtype: string
+#     default: Artist
+
+inputs:
+-   domain: message
+    id: title in
+    optional: false
+-   domain: message
+    id: artist in
+    optional: false
+
 
 outputs:
 -   domain: stream
