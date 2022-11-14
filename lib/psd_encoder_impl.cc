@@ -33,6 +33,13 @@
 namespace gr {
   namespace nrsc5 {
 
+    psd_encoder::sptr
+    psd_encoder::make(const int prog_num, std::string title, std::string artist)
+    {
+      return gnuradio::get_initial_sptr
+        (new psd_encoder_impl(prog_num, title, artist));
+    }
+
     /*
      * The private constructor
      */
@@ -44,10 +51,10 @@ namespace gr {
       this->prog_num = prog_num;
 
       message_port_register_in(pmt::mp("title in"));
-	    set_msg_handler(pmt::mp("title in"), std::bind(&encoder_impl::title_in, this, std::placeholders::_1));
+	    set_msg_handler(pmt::mp("title in"), std::bind(&psd_encoder_impl::title_in, this, std::placeholders::_1));
 
       message_port_register_in(pmt::mp("artist in"));
-	    set_msg_handler(pmt::mp("artist in"), std::bind(&encoder_impl::artist_in, this, std::placeholders::_1));
+	    set_msg_handler(pmt::mp("artist in"), std::bind(&psd_encoder_impl::artist_in, this, std::placeholders::_1));
 
       set_title(std::string(title));
       set_artist(std::string(artist));
@@ -57,14 +64,6 @@ namespace gr {
       packet_off = 0;
 
     }
-
-    psd_encoder::sptr
-    psd_encoder::make(const int prog_num, std::string title, std::string artist)
-    {
-      return gnuradio::get_initial_sptr
-        (new psd_encoder_impl(prog_num, title, artist));
-    }
-
 
     void psd_encoder_impl::title_in(pmt::pmt_t msg) {
       if(!pmt::is_pair(msg)) {
@@ -150,25 +149,21 @@ namespace gr {
       }
     }
 
-    /*
-     * Our virtual destructor.
-     */
-    psd_encoder_impl::~psd_encoder_impl()
-    {
-    }
-
     void psd_encoder_impl::set_title(std::string text) {
-        size_t len = std::min(sizeof(title)), text.length());
-
         std::memset(title, ' ');
         std::memcpy(title, text.c_str());
     }
 
     void psd_encoder_impl::set_artist(std::string text) {
-        size_t len = std::min(sizeof(artist)), text.length());
-
         std::memset(artist, ' ');
         std::memcpy(artist, text.c_str());
+    }
+
+    /*
+     * Our virtual destructor.
+     */
+    psd_encoder_impl::~psd_encoder_impl()
+    {
     }
 
     
@@ -192,7 +187,7 @@ namespace gr {
     }
 
     std::string
-    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq, std::string title, std::string artist)
+    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq, std::string& title, std::string& artist)
     {
       std::string out;
 
@@ -201,14 +196,14 @@ namespace gr {
       out += (char) ((port >> 8) & 0xff);
       out += (char) (seq & 0xff);
       out += (char) ((seq >> 8) & 0xff);
-      out += encode_id3();
+      out += encode_id3(title, artist);
       out += "UF";
 
       return out;
     }
 
     std::string
-    psd_encoder_impl::encode_id3()
+    psd_encoder_impl::encode_id3(std::string& title, std::string& artist)
     {
       std::string tit2("TIT2");
       std::string tpe1("TPE1");

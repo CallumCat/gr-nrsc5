@@ -77,7 +77,7 @@ namespace gr {
       void artist_in(pmt::pmt_t msg);
 
       std::string encode_psd_packet(int dtpf, int port, int seq);
-      std::string encode_id3();
+      std::string encode_id3(std::string& title, std::string& artist);
       std::string encode_frame(std::string& id, std::string& data);
       std::string encode_ppp(std::string packet);
       int compute_fcs(std::string& packet);
