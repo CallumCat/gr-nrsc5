@@ -191,7 +191,7 @@ std::string psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq) {
   out += (char) ((port >> 8) & 0xff);
   out += (char) (seq & 0xff);
   out += (char) ((seq >> 8) & 0xff);
-  out += encode_id3(title, artist);
+  out += encode_id3();
   out += "UF";
 
   return out;
