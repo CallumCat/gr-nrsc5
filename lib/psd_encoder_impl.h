@@ -75,6 +75,8 @@ namespace gr {
       void parse(pmt::pmt_t pdu);
       void title_in(pmt::pmt_t msg);
       void artist_in(pmt::pmt_t msg);
+      std::string artist;
+      std::string title;
 
       std::string encode_psd_packet(int dtpf, int port, int seq);
       std::string encode_id3(std::string& title, std::string& artist);

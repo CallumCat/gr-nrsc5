@@ -34,7 +34,7 @@ namespace gr {
   namespace nrsc5 {
 
     psd_encoder::sptr
-    psd_encoder::make(const int prog_num, std::string title, std::string artist)
+    psd_encoder::make(const int prog_num, std::string& title, std::string& artist)
     {
       return gnuradio::get_initial_sptr
         (new psd_encoder_impl(prog_num, title, artist));
@@ -43,7 +43,7 @@ namespace gr {
     /*
      * The private constructor
      */
-    psd_encoder_impl::psd_encoder_impl(const int prog_num, std::string title, std::string artist)
+    psd_encoder_impl::psd_encoder_impl(const int prog_num, std::string& title, std::string& artist)
       : gr::sync_block("psd_encoder",
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(unsigned char)))
@@ -187,7 +187,7 @@ namespace gr {
     }
 
     std::string
-    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq, std::string& title, std::string& artist)
+    psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq)
     {
       std::string out;
 
@@ -203,7 +203,7 @@ namespace gr {
     }
 
     std::string
-    psd_encoder_impl::encode_id3(std::string& title, std::string& artist)
+    psd_encoder_impl::encode_id3()
     {
       std::string tit2("TIT2");
       std::string tpe1("TPE1");
