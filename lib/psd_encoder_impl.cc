@@ -32,14 +32,18 @@
 
 using namespace gr::nrsc5;
 
+psd_encoder::sptr psd_encoder::make(int prog_num, std::string title, std::string artist) {
+  return gnuradio::get_initial_sptr(
+    new psd_encoder_impl(prog_num, title, artist));
+}
+
 /*
   * The private constructor
 */
-psd_encoder_impl::psd_encoder_impl(const int prog_num, std::string title, std::string artist)
+psd_encoder_impl::psd_encoder_impl (int prog_num, std::string title, std::string artist)
   : gr::sync_block("psd_encoder",
           gr::io_signature::make(0, 0, 0),
-          gr::io_signature::make(1, 1, sizeof(unsigned char)))
-{
+          gr::io_signature::make(1, 1, sizeof(unsigned char))) {
   this->prog_num = prog_num;
 
   message_port_register_in(pmt::mp("title in"));
@@ -165,8 +169,7 @@ void psd_encoder_impl::set_artist(std::string text) {
 
 int psd_encoder_impl::work(int noutput_items,
     gr_vector_const_void_star &input_items,
-    gr_vector_void_star &output_items)
-{
+    gr_vector_void_star &output_items) {
   unsigned char *out = (unsigned char *) output_items[0];
 
   for (int off = 0; off < noutput_items; off++) {
@@ -180,8 +183,7 @@ int psd_encoder_impl::work(int noutput_items,
   return noutput_items;
 }
 
-std::string psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq)
-{
+std::string psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq) {
   std::string out;
 
   out += (char) (dtpf & 0xff);
@@ -195,8 +197,7 @@ std::string psd_encoder_impl::encode_psd_packet(int dtpf, int port, int seq)
   return out;
 }
 
-std::string psd_encoder_impl::encode_id3()
-{
+std::string psd_encoder_impl::encode_id3() {
   std::string tit2("TIT2");
   std::string tpe1("TPE1");
   std::string payload = encode_frame(tit2, title) + encode_frame(tpe1, artist);
@@ -216,8 +217,7 @@ std::string psd_encoder_impl::encode_id3()
   return out;
 }
 
-std::string psd_encoder_impl::encode_frame(std::string& id, std::string& data)
-{
+std::string psd_encoder_impl::encode_frame(std::string& id, std::string& data) {
   int len = data.length() + 1;
   return id + (char) ((len >> 24) & 0xff)
             + (char) ((len >> 16) & 0xff)
@@ -228,8 +228,7 @@ std::string psd_encoder_impl::encode_frame(std::string& id, std::string& data)
             + data;
 }
 
-std::string psd_encoder_impl::encode_ppp(std::string packet)
-{
+std::string psd_encoder_impl::encode_ppp(std::string packet) {
   int fcs = compute_fcs(packet);
   packet += (char) (fcs & 0xff);
   packet += (char) (fcs >> 8);
@@ -252,17 +251,10 @@ std::string psd_encoder_impl::encode_ppp(std::string packet)
   return out;
 }
 
-int psd_encoder_impl::compute_fcs(std::string& packet)
-{
+int psd_encoder_impl::compute_fcs(std::string& packet) {
   int fcs = 0xffff;
   for (int i = 0; i < packet.length(); i++) {
     fcs = (fcs >> 8) ^ FCS_TABLE[(fcs ^ packet[i]) & 0xff];
   }
   return fcs ^ 0xffff;
-}
-
-
-psd_encoder::sptr psd_encoder::make(const int prog_num, std::string title, std::string artist) {
-  return gnuradio::get_initial_sptr(
-    new psd_encoder_impl(prog_num, title, artist));
 }

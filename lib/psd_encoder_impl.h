@@ -65,6 +65,7 @@ namespace gr {
     class psd_encoder_impl : public psd_encoder
     {
      private:
+      ~psd_encoder_impl();
       int prog_num;
       std::string artist;
       std::string title;
@@ -85,8 +86,7 @@ namespace gr {
       int compute_fcs(std::string& packet);
 
      public:
-      psd_encoder_impl(const int prog_num, std::string& title, std::string& artist);
-      ~psd_encoder_impl();
+      psd_encoder_impl(int prog_num, std::string title, std::string artist);
 
       // Where all the action really happens
       int work(int noutput_items,
