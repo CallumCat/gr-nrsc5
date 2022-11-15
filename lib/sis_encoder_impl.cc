@@ -146,7 +146,7 @@ namespace gr {
         }
       }
       // write_int(n, 5);
-      write_int(n, 5);
+      write_int(n, 10);
     }
 
     void
@@ -157,11 +157,11 @@ namespace gr {
       // for (int i = 0; i < 16; i++) {
       //   write_char5(short_name[i]);
       // }
-      write_int(STATION_NAME_LONG, 4);
+      write_int(STATION_NAME_SHORT, 10);
       // for (int i = 0; i < 4; i++) {
       //   write_char5(short_name[i]);
       // }
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 10; i++) {
          write_char5(short_name[i]);
       }
       write_int(EXTENSION_NONE, 2);
