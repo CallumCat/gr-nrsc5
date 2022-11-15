@@ -50,7 +50,7 @@ namespace gr {
      private:
       int num_progs;
       int first_prog;
-      int pty[num_progs];
+      int pty[8];
       int size;
       int payload_bytes;
       unsigned char rs_buf[255];
