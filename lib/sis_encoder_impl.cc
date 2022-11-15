@@ -29,23 +29,24 @@ namespace gr {
   namespace nrsc5 {
 
     sis_encoder::sptr
-    sis_encoder::make(const std::string& short_name)
+    sis_encoder::make(const std::string& short_name, const std::string &station_message)
     {
       return gnuradio::get_initial_sptr
-        (new sis_encoder_impl(short_name));
+        (new sis_encoder_impl(short_name, station_message));
     }
 
 
     /*
      * The private constructor
      */
-    sis_encoder_impl::sis_encoder_impl(const std::string& short_name)
+    sis_encoder_impl::sis_encoder_impl(const std::string& short_name, const std::string &station_message)
       : gr::sync_block("sis_encoder",
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(unsigned char) * SIS_BITS))
     {
       set_output_multiple(BLOCKS_PER_FRAME);
       this->short_name = short_name;
+      this->station_message = station_message;
       alfn = 800000000;
     }
 
@@ -142,18 +143,25 @@ namespace gr {
           default: n = 26;
         }
       }
-      write_int(n, 5);
+      // write_int(n, 5);
+      write_int(n, 17);
     }
 
     void
     sis_encoder_impl::write_station_name_short()
     {
-      write_int(STATION_NAME_SHORT, 4);
-      for (int i = 0; i < 4; i++) {
+      // write_int(STATION_NAME_SHORT, 4);
+      write_int(UNIVERSAL_SHORT_STATION_NAME, 16);
+      for (int i = 0; i < 16; i++) {
         write_char5(short_name[i]);
       }
-      write_int(EXTENSION_FM, 2);
+      write_int(STATION_MESSAGE, 16)
+      for (int i = 0; i < 16; i++) {
+        write_char5(short_message[i]);
+      }
+      // write_int(EXTENSION_FM, 2);
     }
 
   } /* namespace nrsc5 */
 } /* namespace gr */
+7

@@ -71,7 +71,7 @@ namespace gr {
        * class. nrsc5::sis_encoder::make is the public interface for
        * creating new instances.
        */
-      static sptr make(const std::string& short_name="ABCD");
+      static sptr make(const std::string& short_name="ABCD", const std::string &station_message="ABCD");
     };
 
   } // namespace nrsc5

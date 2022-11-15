@@ -9,13 +9,17 @@ parameters:
     label: Station name
     dtype: string
     default: ABCD
+-   id: station_message
+    label: Station message
+    dtype: string
+    default: ABCD
 
 outputs:
 -   domain: stream
     dtype: byte
     vlen: 80
 asserts:
-- ${ len(short_name) == 4 }
+- ${ len(short_name) <= 16 }
 
 templates:
     imports: import nrsc5

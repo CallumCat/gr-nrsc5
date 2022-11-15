@@ -40,7 +40,7 @@ namespace gr {
       void write_station_name_short();
 
      public:
-      sis_encoder_impl(const std::string &short_name="ABCD");
+      sis_encoder_impl(const std::string &short_name="ABCD", const std::string &station_message="ABCD");
       ~sis_encoder_impl();
 
       // Where all the action really happens
