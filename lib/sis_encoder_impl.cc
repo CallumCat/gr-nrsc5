@@ -70,7 +70,7 @@ namespace gr {
           unsigned char *start = bit;
 
           write_bit(PIDS_FORMATTED);
-          write_bit(NO_EXTENSION);
+          write_bit(EXTENDED_FORMAT);
           write_station_name_short();
 
           while (bit < start + 64) {
@@ -144,7 +144,7 @@ namespace gr {
         }
       }
       // write_int(n, 5);
-      write_int(n, 5);
+      write_int(n, 16);
     }
 
     void
@@ -155,10 +155,11 @@ namespace gr {
       // for (int i = 0; i < 16; i++) {
       //   write_char5(short_name[i]);
       // }
-      write_int(STATION_NAME_LONG, 4);
+      write_int(STATION_NAME_LONG, 16);
       for (int i = 0; i < 16; i++) {
          write_char5(short_name[i]);
       }
+      write_int(EXTENSION_NONE, 2);
       // write_int(EXTENSION_FM, 2);
     }
 
