@@ -23,6 +23,6 @@ asserts:
 
 templates:
     imports: import nrsc5
-    make: nrsc5.sis_encoder(${short_name})
+    make: nrsc5.sis_encoder(${short_name}, ${station_message},)
 
 file_format: 1

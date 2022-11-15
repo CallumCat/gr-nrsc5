@@ -31,6 +31,7 @@ namespace gr {
      private:
       unsigned int alfn;
       std::string short_name;
+      std::string station_message;
       unsigned char *bit;
 
       int crc12(unsigned char *sis);
