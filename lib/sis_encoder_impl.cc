@@ -123,7 +123,6 @@ namespace gr {
     {
       for (int i = 0; i < len; i++) {
         write_bit((n >> (len - i - 1)) & 1);
-        std::cout << "Write Int value = \"" << (n >> (len - i - 1)) & 1 << "\"" << std::endl;
       }
     }
 
@@ -159,6 +158,9 @@ namespace gr {
       //   write_char5(short_name[i]);
       // }
       write_int(STATION_NAME_LONG, 16);
+      // for (int i = 0; i < 4; i++) {
+      //   write_char5(short_name[i]);
+      // }
       for (int i = 0; i < 16; i++) {
          write_char5(short_name[i]);
       }
