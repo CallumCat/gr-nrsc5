@@ -189,7 +189,7 @@ namespace gr {
           }
           partial_bytes[p] = end_bytes;
 
-          write_hef(out_program + 14 + len_locators(nop), first_prog + p, /*access*/ 0, /*program_type*/ 0);
+          write_hef(out_program + 14 + len_locators(nop), first_prog + p, /*access*/ 0, /*program_type*/ 9);
 
           memcpy(out_program + (14 + len_locators(nop) + 3), psd[p] + psd_off[p], psd_bytes);
           psd_off[p] += psd_bytes;
