@@ -164,6 +164,10 @@ namespace gr {
       for (int i = 0; i < 4; i++) {
          write_char5(short_name[i]);
       }
+      write_int(STATION_MESSAGE, 4);
+      for (int i = 0; i < 4; i++) {
+         write_char5(station_message[i]);
+      }
       write_int(EXTENSION_NONE, 2);
       // write_int(EXTENSION_FM, 2);
     }
