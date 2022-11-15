@@ -191,13 +191,13 @@ namespace gr {
           partial_bytes[p] = end_bytes;
 
           if (out_program == 0 || p == 0) {
-            pty = 9
+            pty = 9;
           } else if (out_program == 1 || p == 1) {
-            pty = 5
+            pty = 5;
           } else if (out_program == 2 || p == 2) {
-            pty = 1
+            pty = 1;
           } else if (out_program == 3 || p == 3) {
-            pty = 7
+            pty = 7;
           }
 
           write_hef(out_program + 14 + len_locators(nop), first_prog + p, /*access*/ 0, /*program_type*/ pty);
