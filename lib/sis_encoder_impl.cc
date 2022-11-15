@@ -132,10 +132,10 @@ namespace gr {
       int n;
       if (c >= 'A' && c <= 'Z') {
         n = (c - 'A');
-        std::cout << "Char 5 value = \"" << n << "\"" << std::endl;
+        // std::cout << "Char 5 value = \"" << n << "\"" << std::endl;
       } else if (c >= 'a' && c <= 'z') {
         n = (c - 'a');
-        std::cout << "Char 5 value = \"" << n << "\"" << std::endl;
+        // std::cout << "Char 5 value = \"" << n << "\"" << std::endl;
       } else {
         switch (c) {
           case '?': n = 27; break;
@@ -146,7 +146,7 @@ namespace gr {
         }
       }
       // write_int(n, 5);
-      write_int(n, 16);
+      write_int(n, 5);
     }
 
     void
@@ -157,11 +157,11 @@ namespace gr {
       // for (int i = 0; i < 16; i++) {
       //   write_char5(short_name[i]);
       // }
-      write_int(STATION_NAME_LONG, 16);
+      write_int(STATION_NAME_LONG, 4);
       // for (int i = 0; i < 4; i++) {
       //   write_char5(short_name[i]);
       // }
-      for (int i = 0; i < 16; i++) {
+      for (int i = 0; i < 4; i++) {
          write_char5(short_name[i]);
       }
       write_int(EXTENSION_NONE, 2);
