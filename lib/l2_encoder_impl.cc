@@ -53,7 +53,7 @@ namespace gr {
       this->num_progs = num_progs;
       this->first_prog = first_prog;
       this->size = size;
-      this->pty = pty;
+      this->pty = pty[num_progs];
       payload_bytes = (size - 22) / 8;
       out_buf = (unsigned char *) malloc(payload_bytes);
       rs_enc = init_rs_char(8, 0x11d, 1, 1, 8);
