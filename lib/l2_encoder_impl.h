@@ -50,7 +50,6 @@ namespace gr {
      private:
       int num_progs;
       int first_prog;
-      int pty[8];
       int size;
       int payload_bytes;
       unsigned char rs_buf[255];
@@ -76,7 +75,7 @@ namespace gr {
       int len_locators(int nop);
 
      public:
-      l2_encoder_impl(const int num_progs, const int first_prog, const int size, int pty);
+      l2_encoder_impl(const int num_progs, const int first_prog, const int size);
       ~l2_encoder_impl();
 
       // Where all the action really happens

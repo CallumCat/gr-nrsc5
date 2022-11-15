@@ -35,17 +35,17 @@ namespace gr {
   namespace nrsc5 {
 
     l2_encoder::sptr
-    l2_encoder::make(const int num_progs, const int first_prog, const int size, int pty)
+    l2_encoder::make(const int num_progs, const int first_prog, const int size)
     {
       return gnuradio::get_initial_sptr
-        (new l2_encoder_impl(num_progs, first_prog, size, pty));
+        (new l2_encoder_impl(num_progs, first_prog, size));
     }
 
 
     /*
      * The private constructor
      */
-    l2_encoder_impl::l2_encoder_impl(const int num_progs, const int first_prog, const int size, int pty)
+    l2_encoder_impl::l2_encoder_impl(const int num_progs, const int first_prog, const int size)
       : gr::block("l2_encoder",
               gr::io_signature::make(2, 16, sizeof(unsigned char)),
               gr::io_signature::make(1, 1, sizeof(unsigned char) * size))
@@ -133,7 +133,7 @@ namespace gr {
           int audio_length = 0;
           int begin_bytes = 0;
           int end_bytes = 0;
-          int pty2 = pty[p];
+          int pty = 0;
           if (partial_bytes[p]) {
             nop++;
             audio_length = partial_bytes[p] + 1;
@@ -190,21 +190,17 @@ namespace gr {
           }
           partial_bytes[p] = end_bytes;
 
-          // if (p == 0) {
-          //   pty2 = pty[0]
-          //   // pty = 9;
-          // } else if (p == 1) {
-          //   pty2 = pty[1]
-          //   // pty = 5;
-          // } else if (p == 2) {
-          //   pty = 1;
-          // } else if (p == 3) {
-          //   pty = 7;
-          // }
+          if (p == 0) {
+            pty = 9;
+          } else if (p == 1) {
+            pty = 5;
+          } else if (p == 2) {
+            pty = 1;
+          } else if (p == 3) {
+            pty = 7;
+          }
 
-          // Fox refer here
-
-          write_hef(out_program + 14 + len_locators(nop), first_prog + p, /*access*/ 0, /*program_type*/ pty2);
+          write_hef(out_program + 14 + len_locators(nop), first_prog + p, /*access*/ 0, /*program_type*/ pty);
 
           memcpy(out_program + (14 + len_locators(nop) + 3), psd[p] + psd_off[p], psd_bytes);
           psd_off[p] += psd_bytes;
