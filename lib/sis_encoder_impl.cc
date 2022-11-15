@@ -155,7 +155,7 @@ namespace gr {
       // for (int i = 0; i < 16; i++) {
       //   write_char5(short_name[i]);
       // }
-      write_int(STATION_NAME_LONG, 4)
+      write_int(STATION_NAME_LONG, 4);
       for (int i = 0; i < 16; i++) {
          write_char5(short_name[i]);
       }
