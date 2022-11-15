@@ -105,7 +105,7 @@ void psd_encoder_impl::title_in(pmt::pmt_t msg) {
 
   int msg_len = pmt::blob_length(pmt::cdr(msg));
   std::string in = std::string((char*)pmt::blob_data(pmt::cdr(msg)), msg_len);
-  cout << "input string: " << in << "   length: " << in.size() << endl;
+  // cout << "input string: " << in << "   length: " << in.size() << endl;
 
   unsigned int ui1;
   std::string s1;
@@ -116,7 +116,7 @@ void psd_encoder_impl::title_in(pmt::pmt_t msg) {
   if(phrase_parse(in.begin(), in.end(),
       "title" >> lexeme[+(char_ - '\n')] >> -lit("\n"),
       space, s1)) {
-    cout << "title: " << s1 << endl;
+    // cout << "title: " << s1 << endl;
     set_title(s1);
 
 
@@ -147,7 +147,7 @@ void psd_encoder_impl::artist_in(pmt::pmt_t msg) {
 
   int msg_len = pmt::blob_length(pmt::cdr(msg));
   std::string in = std::string((char*)pmt::blob_data(pmt::cdr(msg)), msg_len);
-  cout << "input string: " << in << "   length: " << in.size() << endl;
+  // cout << "input string: " << in << "   length: " << in.size() << endl;
 
   unsigned int ui1;
   std::string s1;
@@ -158,7 +158,7 @@ void psd_encoder_impl::artist_in(pmt::pmt_t msg) {
   if(phrase_parse(in.begin(), in.end(),
       "artist" >> lexeme[+(char_ - '\n')] >> -lit("\n"),
       space, s1)) {
-    cout << "artist: " << s1 << endl;
+    // cout << "artist: " << s1 << endl;
     set_artist(s1);
 
 

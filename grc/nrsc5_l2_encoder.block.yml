@@ -18,6 +18,25 @@ parameters:
     dtype: int
     default: 146176
     options: [146176, 109312, 72448, 30000, 24000, 18272, 9216, 4608, 3750, 2304]
+-   id: pty
+    label: PTY
+    dtype: int
+    default: '0'
+    options: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',
+        '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25',
+        '26', '27', '28', '29', '30', '31']
+    option_labels: [Undefined, News, Current Affairs / Information, Information /
+            Sports, Sport / Talk, Education / Rock, Drama / Classic Rock, Culture
+            / Adult Hits, Science / Soft Rock, Varied / Top 40, Pop Music / Country,
+        Rock Music / Oldies, Easy Listening / Soft, Light Classical / Nostalgia, Serious
+            Classical / Jazz, Other Music / Classical, Weather / Rhythm & Blues, Finance
+            / Soft Rhythm & Blues, "Children\u2019s Programmes / Language", Social
+            Affairs / Religious Music, Religion / Religious Talk, Phone-In / Personality,
+        Travel / Public, Leisure / College, Jazz Music / Spanish Talk, Country Music
+            / Spanish Music, National Music / Hip Hop, Oldies Music / Unassigned,
+        Folk Music / Unassigned, Documentary / Weather, Alarm Test / Emergency Test,
+        Alarm / Emergency]
+    multiplicity: ${ num_progs }
 
 inputs:
 -   label: hdc
