@@ -46,12 +46,21 @@ psd_encoder_impl::psd_encoder_impl (int prog_num, std::string title, std::string
           gr::io_signature::make(1, 1, sizeof(unsigned char))) {
   this->prog_num = prog_num;
 
+  // v3.8
   message_port_register_in(pmt::mp("title in"));
-	set_msg_handler(pmt::mp("title in"), [this](pmt::pmt_t msg) { this->title_in(msg); });
+	set_msg_handler(pmt::mp("title in"), boost::bind(&psd_encoder_impl::title_in, this, _1));
 
   message_port_register_in(pmt::mp("artist in"));
-	set_msg_handler(pmt::mp("artist in"), [this](pmt::pmt_t msg) { this->artist_in(msg); });
+	set_msg_handler(pmt::mp("artist in"), boost::bind(&psd_encoder_impl::title_in, this, _1));
 
+  // v3.10
+  // message_port_register_in(pmt::mp("title in"));
+	// set_msg_handler(pmt::mp("title in"), [this](pmt::pmt_t msg) { this->title_in(msg); });
+
+  // message_port_register_in(pmt::mp("artist in"));
+	// set_msg_handler(pmt::mp("artist in"), [this](pmt::pmt_t msg) { this->artist_in(msg); });
+
+  // v3.9
   // message_port_register_in(pmt::mp("title in"));
   // set_msg_handler(pmt::mp("title in"), std::bind(&psd_encoder_impl::title_in, this, std::placeholders::_1));
 
