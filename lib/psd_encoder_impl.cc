@@ -47,10 +47,16 @@ psd_encoder_impl::psd_encoder_impl (int prog_num, std::string title, std::string
   this->prog_num = prog_num;
 
   message_port_register_in(pmt::mp("title in"));
-  set_msg_handler(pmt::mp("title in"), std::bind(&psd_encoder_impl::title_in, this, std::placeholders::_1));
+	set_msg_handler(pmt::mp("title in"), [this](pmt::pmt_t msg) { this->title_in(msg); });
 
   message_port_register_in(pmt::mp("artist in"));
-  set_msg_handler(pmt::mp("artist in"), std::bind(&psd_encoder_impl::artist_in, this, std::placeholders::_1));
+	set_msg_handler(pmt::mp("artist in"), [this](pmt::pmt_t msg) { this->artist_in(msg); });
+
+  // message_port_register_in(pmt::mp("title in"));
+  // set_msg_handler(pmt::mp("title in"), std::bind(&psd_encoder_impl::title_in, this, std::placeholders::_1));
+
+  // message_port_register_in(pmt::mp("artist in"));
+  // set_msg_handler(pmt::mp("artist in"), std::bind(&psd_encoder_impl::artist_in, this, std::placeholders::_1));
 
   set_title(std::string(title));
   set_artist(std::string(artist));
