@@ -133,6 +133,7 @@ namespace gr {
           int audio_length = 0;
           int begin_bytes = 0;
           int end_bytes = 0;
+          int pty = 0;
           if (partial_bytes[p]) {
             nop++;
             audio_length = partial_bytes[p] + 1;
@@ -189,7 +190,17 @@ namespace gr {
           }
           partial_bytes[p] = end_bytes;
 
-          write_hef(out_program + 14 + len_locators(nop), first_prog + p, /*access*/ 0, /*program_type*/ 9);
+          if (out_program == 0 || p == 0) {
+            pty = 9
+          } else if (out_program == 1 || p == 1) {
+            pty = 5
+          } else if (out_program == 2 || p == 2) {
+            pty = 1
+          } else if (out_program == 3 || p == 3) {
+            pty = 7
+          }
+
+          write_hef(out_program + 14 + len_locators(nop), first_prog + p, /*access*/ 0, /*program_type*/ pty);
 
           memcpy(out_program + (14 + len_locators(nop) + 3), psd[p] + psd_off[p], psd_bytes);
           psd_off[p] += psd_bytes;
