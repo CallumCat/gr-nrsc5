@@ -123,6 +123,7 @@ namespace gr {
     {
       for (int i = 0; i < len; i++) {
         write_bit((n >> (len - i - 1)) & 1);
+        std::cout << "Write Int value = \"" << (n >> (len - i - 1)) & 1 << "\"" << std::endl;
       }
     }
 
@@ -132,8 +133,10 @@ namespace gr {
       int n;
       if (c >= 'A' && c <= 'Z') {
         n = (c - 'A');
+        std::cout << "Char 5 value = \"" << n << "\"" << std::endl;
       } else if (c >= 'a' && c <= 'z') {
         n = (c - 'a');
+        std::cout << "Char 5 value = \"" << n << "\"" << std::endl;
       } else {
         switch (c) {
           case '?': n = 27; break;
