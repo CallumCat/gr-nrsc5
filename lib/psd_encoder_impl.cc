@@ -51,7 +51,7 @@ psd_encoder_impl::psd_encoder_impl (int prog_num, std::string title, std::string
 	set_msg_handler(pmt::mp("title in"), boost::bind(&psd_encoder_impl::title_in, this, _1));
 
   message_port_register_in(pmt::mp("artist in"));
-	set_msg_handler(pmt::mp("artist in"), boost::bind(&psd_encoder_impl::title_in, this, _1));
+	set_msg_handler(pmt::mp("artist in"), boost::bind(&psd_encoder_impl::artist_in, this, _1));
 
   // v3.10
   // message_port_register_in(pmt::mp("title in"));
