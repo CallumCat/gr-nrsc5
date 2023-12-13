@@ -17,7 +17,7 @@ extern "C" {
 namespace gr {
 namespace nrsc5 {
 
-constexpr int HDC_SAMPLE_RATE = 44100;
+constexpr int HDC_SAMPLE_RATE = 192000;
 constexpr int SAMPLES_PER_FRAME = 2048;
 
 class hdc_encoder_impl : public hdc_encoder
